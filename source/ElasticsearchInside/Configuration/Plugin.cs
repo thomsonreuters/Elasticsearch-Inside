@@ -36,9 +36,9 @@ namespace ElasticsearchInside.Configuration
         {
             if (Url != null)
             {
-                return "install \"" + Url + "\"";
+                return $"install \"{Url}\"";
             }
-            return "install \"" + Name + "\"";
+            return $"install \"{Name}\"";
         }
     }
 }

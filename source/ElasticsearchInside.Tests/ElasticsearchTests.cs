@@ -1,5 +1,6 @@
 ﻿using Nest;
 using NUnit.Framework;
+using System.IO;
 
 namespace ElasticsearchInside.Tests
 {

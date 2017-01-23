@@ -98,7 +98,8 @@ namespace ElasticsearchInside.Tests
         public void Can_install_plugin_url()
         {
             string pluginName = "mapper-size";
-            string pluginUrl = "file:///" + Directory.GetCurrentDirectory() + "\\TestFiles\\mapper-size-5.0.0.zip";
+            // from https://artifacts.elastic.co/downloads/elasticsearch-plugins/mapper-size/mapper-size-5.1.1.zip
+            string pluginUrl = "file:///" + Directory.GetCurrentDirectory() + "\\TestFiles\\mapper-size-5.1.1.zip";
             using (var elasticsearch = new Elasticsearch(c => c.EnableLogging().AddPlugin(new Configuration.Plugin(pluginName, pluginUrl))))
             {
                 ////Arrange
@@ -112,8 +113,6 @@ namespace ElasticsearchInside.Tests
                 {
                     pluginCount++;
                 }
-
-                var stats = client.ClusterStats();
 
                 ////Assert
                 Assert.That(result.IsValid);

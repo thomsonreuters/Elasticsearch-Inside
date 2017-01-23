@@ -64,7 +64,7 @@
   <ItemGroup>
     <None Include="app.config" />
     <None Include="packages.config" />
-    <None Include="TestFiles\mapper-size-5.0.0.zip">
+    <None Include="TestFiles\mapper-size-5.1.1.zip">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>

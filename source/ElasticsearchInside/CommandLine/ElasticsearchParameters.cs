@@ -60,6 +60,9 @@ namespace ElasticsearchInside.CommandLine
         [FormattedArgument("-Des.path.home=\"{0}\"")]
         public DirectoryInfo EsHomePath { get; set; }
 
+        [FormattedArgument("-Dlog4j2.disable.jmx={0}", "true")]
+        public string DisableJMX { get; set; }
+
         [BooleanArgument(@"-cp ""lib/*""", true)]
         internal object ClassPath { get; set; }
 

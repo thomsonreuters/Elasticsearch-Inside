@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ElasticsearchInside.Configuration;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -59,34 +60,34 @@ namespace ElasticsearchInside.CommandLine
         [FormattedArgument("-Des.path.home=\"{0}\"")]
         public DirectoryInfo EsHomePath { get; set; }
 
-        [FormattedArgument("-Des.http.port={0}", 1234)]
+        [BooleanArgument(@"-cp ""lib/*""", true)]
+        internal object ClassPath { get; set; }
+
+        [BooleanArgument("\"org.elasticsearch.bootstrap.Elasticsearch\"", true)]
+        internal object JarFile { get; set; }
+
+        [FormattedArgument("-Ehttp.port={0}", 1234)]
         public int? ElasticsearchPort { get; set; }
 
-        [FormattedArgument("-Des.node.name={0}", "integrationtest_node")]
+        [FormattedArgument("-Enode.name={0}", "integrationtest_node")]
         public string EsNodeName { get; set; }
 
-        [FormattedArgument("-Des.path.conf={0}", "config")]
+        [FormattedArgument("-Epath.conf={0}", "config")]
         public DirectoryInfo ConfigPath { get; set; }
 
-        [FormattedArgument("-Des.script.inline={0}", "true")]
-        public OnOffParameter ElasticsearchScriptInline { get; set; }
-
-        [FormattedArgument("-Des.script.indexed={0}", "true")]
-        public OnOffParameter ElasticsearchScriptIndexed { get; set; }
-
-        [FormattedArgument("-Des.script.file={0}", "true")]
+        [FormattedArgument("-Escript.file={0}", "true")]
         public OnOffParameter ElasticsearchScriptFile { get; set; }
 
-        [FormattedArgument("-Des.discovery.zen.minimum_master_nodes={0}", 1)]
+        [FormattedArgument("-Ediscovery.zen.minimum_master_nodes={0}", 1)]
         public int MinimumMasterNodes { get; set; }
-        
-        [FormattedArgument("-Des.node.local={0}", "true")]
-        public OnOffParameter EsNodeLocal { get; set; }
 
-        [FormattedArgument("-Des.cluster.name=integrationtest_{0}", "tester")]
+        [FormattedArgument("-Etransport.type={0}", "local")]
+        public string TransportType { get; set; }
+
+        [FormattedArgument("-Ecluster.name=integrationtest_{0}", "tester")]
         public string Clustername { get; set; }
 
-        [FormattedArgument("-Des.network.host={0}")]
+        [FormattedArgument("-Enetwork.host={0}")]
         public string NetworkHost { get; set; }
 
         [FormattedArgument("{0}")]
@@ -95,12 +96,7 @@ namespace ElasticsearchInside.CommandLine
             get { return string.Join(" ", _customCommandlineArguments); }
         }
 
-        [BooleanArgument(@"-cp ""lib/*""", true)]
-        internal object ClassPath { get; set; }
-
-        [BooleanArgument("\"org.elasticsearch.bootstrap.Elasticsearch\"", true)]
-        internal object JarFile { get; set; }
-
+        internal List<Plugin> Plugins { get; } = new List<Plugin>();
 
         public IElasticsearchParameters HeapSize(int initialHeapsizeMB = 128, int maximumHeapsizeMB = 128)
         {
@@ -139,6 +135,12 @@ namespace ElasticsearchInside.CommandLine
         public IElasticsearchParameters AddArgument(string argument)
         {
             _customCommandlineArguments.Add(argument);
+            return this;
+        }
+
+        public IElasticsearchParameters AddPlugin(Plugin plugin)
+        {
+            Plugins.Add(plugin);
             return this;
         }
     }

@@ -1,5 +1,6 @@
 ﻿using Nest;
 using NUnit.Framework;
+using System.IO;
 
 namespace ElasticsearchInside.Tests
 {
@@ -8,7 +9,7 @@ namespace ElasticsearchInside.Tests
     {
         [Test]
         public void Can_start()
-        { 
+        {
             using (var elasticsearch = new Elasticsearch())
             {
                 ////Arrange
@@ -22,7 +23,7 @@ namespace ElasticsearchInside.Tests
             }
         }
 
-        
+
         [Test]
         public void Can_insert_data()
         {
@@ -66,6 +67,57 @@ namespace ElasticsearchInside.Tests
             {
                 ////Assert
                 Assert.That(logged);
+            }
+        }
+
+        [Test]
+        public void Can_install_plugin()
+        {
+            string pluginName = "mapper-size";
+            using (var elasticsearch = new Elasticsearch(c => c.AddPlugin(new Configuration.Plugin(pluginName))))
+            {
+                ////Arrange
+                var client = new ElasticClient(new ConnectionSettings(elasticsearch.Url));
+
+                ////Act
+                var result = client.CatPlugins();
+
+                int pluginCount = 0;
+                foreach (CatPluginsRecord plugin in result.Records)
+                {
+                    pluginCount++;
+                }
+
+                ////Assert
+                Assert.That(result.IsValid);
+                Assert.AreEqual(1, pluginCount);
+            }
+        }
+
+        [Test]
+        public void Can_install_plugin_url()
+        {
+            string pluginName = "mapper-size";
+            string pluginUrl = "file:///" + Directory.GetCurrentDirectory() + "\\TestFiles\\mapper-size-5.0.0.zip";
+            using (var elasticsearch = new Elasticsearch(c => c.EnableLogging().AddPlugin(new Configuration.Plugin(pluginName, pluginUrl))))
+            {
+                ////Arrange
+                var client = new ElasticClient(new ConnectionSettings(elasticsearch.Url));
+
+                ////Act
+                var result = client.CatPlugins();
+
+                int pluginCount = 0;
+                foreach (CatPluginsRecord plugin in result.Records)
+                {
+                    pluginCount++;
+                }
+
+                var stats = client.ClusterStats();
+
+                ////Assert
+                Assert.That(result.IsValid);
+                Assert.AreEqual(1, pluginCount);
             }
         }
     }

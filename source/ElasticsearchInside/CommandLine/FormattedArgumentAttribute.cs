@@ -6,11 +6,13 @@ namespace ElasticsearchInside.CommandLine
     {
         private readonly string _argumentName;
         private readonly object _defaultValue;
+        private readonly bool _skipIfNull;
 
-        public FormattedArgumentAttribute(string argumentName, object defaultValue = null)
+        public FormattedArgumentAttribute(string argumentName, object defaultValue = null, bool skipIfNull = false)
         {
             _argumentName = argumentName;
             _defaultValue = defaultValue;
+            _skipIfNull = skipIfNull;
         }
 
         public string ArgumentName
@@ -21,6 +23,11 @@ namespace ElasticsearchInside.CommandLine
         public object DefaultValue
         {
             get { return _defaultValue; }
+        }
+
+        public bool SkipIfNull
+        {
+            get { return _skipIfNull; }
         }
     }
 }

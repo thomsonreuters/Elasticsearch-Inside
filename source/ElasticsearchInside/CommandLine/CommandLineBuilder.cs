@@ -20,8 +20,11 @@ namespace ElasticsearchInside.CommandLine
 
                 if (args != null)
                 {
-                    var value = propertyInfo.GetValue(entity) ?? args.DefaultValue;
-                    stringBuilder.AppendFormat(" " + args.ArgumentName, value);
+                    if (!args.SkipIfNull || propertyInfo.GetValue(entity) != null)
+                    {
+                        var value = propertyInfo.GetValue(entity) ?? args.DefaultValue;
+                        stringBuilder.AppendFormat(" " + args.ArgumentName, value);
+                    }
                 }
 
                 var argumentAttribute = propertyInfo.GetCustomAttributes(typeof(BooleanArgumentAttribute), true).OfType<BooleanArgumentAttribute>().FirstOrDefault();

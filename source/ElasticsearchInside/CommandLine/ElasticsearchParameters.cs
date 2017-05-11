@@ -51,6 +51,9 @@ namespace ElasticsearchInside.CommandLine
         [FormattedArgument("-Dfile.encoding={0}", "UTF-8")]
         public string FileEncoding { get; set; }
 
+        [FormattedArgument("-Djava.security.policy=\"{0}\"", "")]
+        public string ElasticsearchJavaPolicyFile { get; set; }
+
         [BooleanArgument("-Delasticsearch", true)]
         internal string Elasticsearch { get; set; }
 
@@ -144,6 +147,12 @@ namespace ElasticsearchInside.CommandLine
         public IElasticsearchParameters AddPlugin(Plugin plugin)
         {
             Plugins.Add(plugin);
+            return this;
+        }
+
+        public IElasticsearchParameters JavaPolicyFile(string path)
+        {
+            ElasticsearchJavaPolicyFile = path;
             return this;
         }
     }

@@ -17,5 +17,6 @@ namespace ElasticsearchInside.CommandLine
 
         IElasticsearchParameters AddPlugin(Plugin plugin);
 
+        IElasticsearchParameters JavaPolicyFile(string path);
     }
 }

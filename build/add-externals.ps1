@@ -13,14 +13,14 @@ function DownloadElasticsearch {
     
     $doc = New-Object HtmlAgilityPack.HtmlDocument
 
-    $WebResponse = Invoke-WebRequest "https://www.elastic.co/downloads/elasticsearch"
+    # $WebResponse = Invoke-WebRequest "https://www.elastic.co/downloads/elasticsearch"
 
-    $doc.LoadHtml($WebResponse.Content)
+    # $doc.LoadHtml($WebResponse.Content)
 
-    $url = $doc.DocumentNode.SelectSingleNode("//a[starts-with(@class, 'zip-link')]");
+    # $url = $doc.DocumentNode.SelectSingleNode("//a[starts-with(@class, 'zip-link')]");
 
     # change this line to download a specific version
-    $downloadUrl = "https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-5.0.0.zip" #New-Object System.Uri -ArgumentList @($url.Attributes["href"].Value)
+    $downloadUrl = "https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-5.1.2.zip" #New-Object System.Uri -ArgumentList @($url.Attributes["href"].Value)
     
     Write-Host "Downloading " $downloadUrl
 

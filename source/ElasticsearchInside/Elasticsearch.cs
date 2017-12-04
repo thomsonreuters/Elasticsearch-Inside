@@ -111,12 +111,13 @@ namespace ElasticsearchInside
                 Info("    " + proc.StartInfo.FileName + " " + proc.StartInfo.Arguments);
                 proc.Start();
                 proc.BeginOutputReadLine();
+                proc.BeginErrorReadLine();
                 Info("Waiting for plugin " + plugin.Name + " install...");
                 proc.WaitForExit();
-                Info("Plugin " + plugin.Name + " installed.");
-
-                Restart();
+                Info($"Plugin {plugin.Name} install completed [exit-code {proc.ExitCode}].");
             }
+
+            Restart();
         }
 
         private void SetupEnvironment()
@@ -187,6 +188,7 @@ namespace ElasticsearchInside
             _elasticSearchProcess.ErrorDataReceived += (sender, eventargs) => Info(eventargs.Data);
             _elasticSearchProcess.OutputDataReceived += (sender, eventargs) => Info(eventargs.Data);
             _elasticSearchProcess.BeginOutputReadLine();
+            _elasticSearchProcess.BeginErrorReadLine();
         }
 
         public void Restart()

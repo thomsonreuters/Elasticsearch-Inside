@@ -12,8 +12,10 @@ namespace ElasticsearchInside.CommandLine
         IElasticsearchParameters EnableLogging(bool enable = true);
 
         IElasticsearchParameters LogTo(Action<string, object[]> logger);
+        
+        IElasticsearchParameters AddJavaArgument(string argument);
 
-        IElasticsearchParameters AddArgument(string argument);
+        IElasticsearchParameters AddElasticsearchArgument(string argument);
 
         IElasticsearchParameters AddPlugin(Plugin plugin);
 

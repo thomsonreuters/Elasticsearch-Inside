@@ -12,7 +12,10 @@ namespace ElasticsearchInside.CommandLine
 
         private Action<string, object[]> _logger = (format, args) => Trace.WriteLine(string.Format(format, args));
 
-        private IList<string> _customCommandlineArguments = new List<string>();
+        private IList<string> _customElasticsearchCommandlineArguments = new List<string>();
+
+        private IList<string> _customJavaArguments = new List<string>();
+
         public ElasticsearchParameters()
         {
             ElasticsearchPort = Random.Next(49152, 65535 + 1);
@@ -66,6 +69,12 @@ namespace ElasticsearchInside.CommandLine
         [FormattedArgument("-Dlog4j2.disable.jmx={0}", "true")]
         public string DisableJMX { get; set; }
 
+        [FormattedArgument("{0}")]
+        public string CustomJavaArguments
+        {
+            get { return string.Join(" ", _customJavaArguments); }
+        }
+
         [BooleanArgument(@"-cp ""lib/*""", true)]
         internal object ClassPath { get; set; }
 
@@ -97,9 +106,9 @@ namespace ElasticsearchInside.CommandLine
         public string NetworkHost { get; set; }
 
         [FormattedArgument("{0}")]
-        public string CustomArguments
+        public string CustomElasticsearchArguments
         {
-            get { return string.Join(" ", _customCommandlineArguments); }
+            get { return string.Join(" ", _customElasticsearchCommandlineArguments); }
         }
 
         internal List<Plugin> Plugins { get; } = new List<Plugin>();
@@ -136,11 +145,16 @@ namespace ElasticsearchInside.CommandLine
             this._logger = logger;
             return this;
         }
-
-
-        public IElasticsearchParameters AddArgument(string argument)
+        
+        public IElasticsearchParameters AddElasticsearchArgument(string argument)
         {
-            _customCommandlineArguments.Add(argument);
+            _customElasticsearchCommandlineArguments.Add(argument);
+            return this;
+        }
+
+        public IElasticsearchParameters AddJavaArgument(string argument)
+        {
+            _customJavaArguments.Add(argument);
             return this;
         }
 
